@@ -8,6 +8,7 @@ class Sketch {
   final double strokeWidth;
   // final double size;
   final SketchType type;
+  bool isErasing;
   final bool filled;
   // final int sides;
 
@@ -18,6 +19,8 @@ class Sketch {
     required this.color,
     this.type = SketchType.line,
     this.filled = false,
+    // this.isErasing = false,
+    required this.isErasing,
     // this.sides = 3,
     // required this.size,
   });
@@ -32,7 +35,9 @@ class Sketch {
       color: sketch.color,
       paths: sketch.paths,
       // size: sketch.size,
+      isErasing: sketch.isErasing,
       strokeWidth: sketch.strokeWidth,
+      
       // filled: drawingMode == DrawingMode.line ||
       //         drawingMode == DrawingMode.pencil ||
       //         drawingMode == DrawingMode.eraser
@@ -68,6 +73,7 @@ class Sketch {
       // 'size': size,
       // 'filled': filled,
       'strokeWidth': strokeWidth,
+      'isErasing': isErasing,
       'type': type.toRegularString(),
       // 'sides': sides,
     };
@@ -82,6 +88,7 @@ class Sketch {
       color: (json['color'] as String).toColor(),
       // size: json['size'],
       strokeWidth: json['strokeWidth'],
+      isErasing: json['isErasing'],
       // filled: json['filled'],
       type: (json['type'] as String).toSketchTypeEnum(),
       // sides: json['sides'],
@@ -89,7 +96,7 @@ class Sketch {
   }
 }
 
-enum SketchType {  line, pencil, scribble, square, circle, polygon }
+enum SketchType { line, pencil, scribble, square, circle, polygon }
 
 extension SketchTypeX on SketchType {
   String toRegularString() => toString().split('.')[1];

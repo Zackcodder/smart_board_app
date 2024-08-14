@@ -77,7 +77,9 @@ class BackGroundDesignOptions extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(width: 20,),
+              const SizedBox(
+                width: 20,
+              ),
 
               ///templete display
               SizedBox(
@@ -95,9 +97,8 @@ class BackGroundDesignOptions extends StatelessWidget {
                           ///BG1
                           GestureDetector(
                             onTap: () {
-                                sketchProvider
-                                    .setBackgroundImage('assets/BG.png');
-                             
+                              sketchProvider.loadImage('assets/BG.png');
+                              // .setBackgroundImage('assets/BG.png');
                             },
                             child: SizedBox(
                               height: 80,
@@ -114,7 +115,8 @@ class BackGroundDesignOptions extends StatelessWidget {
                           //BG2
                           GestureDetector(
                             onTap: () {
-                              sketchProvider.setBackgroundImage('assets/BG1.jpg');
+                              sketchProvider.loadImage('assets/BG1.jpg');
+                                  // .setBackgroundImage('assets/BG1.jpg');
                             },
                             child: SizedBox(
                               height: 80,
@@ -131,7 +133,8 @@ class BackGroundDesignOptions extends StatelessWidget {
                           //BG3
                           GestureDetector(
                             onTap: () {
-                              sketchProvider.setBackgroundImage('assets/BG2.jpg');
+                              sketchProvider.loadImage('assets/BG2.jpg');
+                                  // .setBackgroundImage('assets/BG2.jpg');
                             },
                             child: SizedBox(
                               height: 80,
@@ -144,8 +147,11 @@ class BackGroundDesignOptions extends StatelessWidget {
                           ),
                         ],
                       ),
-                
-                      const SizedBox(height: 20,),
+
+                      const SizedBox(
+                        height: 20,
+                      ),
+
                       ///second roll
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -153,7 +159,8 @@ class BackGroundDesignOptions extends StatelessWidget {
                           ///BG4
                           GestureDetector(
                             onTap: () {
-                              sketchProvider.setBackgroundImage('assets/BG3.png');
+                              sketchProvider.loadImage('assets/BG3.png');
+                                  // .setBackgroundImage('assets/BG3.png');
                             },
                             child: SizedBox(
                               height: 80,
@@ -170,7 +177,8 @@ class BackGroundDesignOptions extends StatelessWidget {
                           //BG5
                           GestureDetector(
                             onTap: () {
-                              sketchProvider.setBackgroundImage('assets/BG4.png');
+                              sketchProvider.loadImage('assets/BG4.png');
+                                  // .setBackgroundImage('assets/BG4.png');
                             },
                             child: SizedBox(
                               height: 80,
@@ -187,7 +195,8 @@ class BackGroundDesignOptions extends StatelessWidget {
                           //BG6
                           GestureDetector(
                             onTap: () {
-                              sketchProvider.setBackgroundImage('assets/BG5.jpg');
+                              sketchProvider.loadImage('assets/BG5.jpg');
+                                  // .setBackgroundImage('assets/BG5.jpg');
                             },
                             child: SizedBox(
                               height: 80,
@@ -200,8 +209,11 @@ class BackGroundDesignOptions extends StatelessWidget {
                           ),
                         ],
                       ),
-                
-                      const SizedBox(height: 20,),
+
+                      const SizedBox(
+                        height: 20,
+                      ),
+
                       ///3rd roll
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -209,7 +221,8 @@ class BackGroundDesignOptions extends StatelessWidget {
                           ///BG4
                           GestureDetector(
                             onTap: () {
-                              sketchProvider.setBackgroundImage('assets/BG3.png');
+                              sketchProvider.loadImage('assets/BG3.png');
+                                  // .setBackgroundImage('assets/BG3.png');
                             },
                             child: SizedBox(
                               height: 80,
@@ -226,7 +239,8 @@ class BackGroundDesignOptions extends StatelessWidget {
                           //BG5
                           GestureDetector(
                             onTap: () {
-                              sketchProvider.setBackgroundImage('assets/BG4.png');
+                              sketchProvider.loadImage('assets/BG4.png');
+                                  // .setBackgroundImage('assets/BG4.png');
                             },
                             child: SizedBox(
                               height: 80,
@@ -243,7 +257,8 @@ class BackGroundDesignOptions extends StatelessWidget {
                           //BG6
                           GestureDetector(
                             onTap: () {
-                              sketchProvider.setBackgroundImage('assets/BG6.jpg');
+                              sketchProvider.loadImage('assets/BG6.jpg');
+                                  // .setBackgroundImage('assets/BG6.jpg');
                             },
                             child: SizedBox(
                               height: 80,
@@ -256,8 +271,10 @@ class BackGroundDesignOptions extends StatelessWidget {
                           ),
                         ],
                       ),
-                       const SizedBox(height: 20,),
-                      
+                      const SizedBox(
+                        height: 20,
+                      ),
+
                       ///4th roll
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -265,7 +282,8 @@ class BackGroundDesignOptions extends StatelessWidget {
                           ///BG4
                           GestureDetector(
                             onTap: () {
-                              sketchProvider.setBackgroundImage('assets/BG3.png');
+                              sketchProvider.loadImage('assets/BG3.png');
+                                  // .setBackgroundImage('assets/BG3.png');
                             },
                             child: SizedBox(
                               height: 80,
@@ -282,7 +300,8 @@ class BackGroundDesignOptions extends StatelessWidget {
                           //BG5
                           GestureDetector(
                             onTap: () {
-                              sketchProvider.setBackgroundImage('assets/BG4.png');
+                              sketchProvider.loadImage('assets/BG4.png');
+                                  // .setBackgroundImage('assets/BG4.png');
                             },
                             child: SizedBox(
                               height: 80,
@@ -299,7 +318,8 @@ class BackGroundDesignOptions extends StatelessWidget {
                           //BG6
                           GestureDetector(
                             onTap: () {
-                              sketchProvider.setBackgroundImage('assets/BG5.jpg');
+                              sketchProvider.loadImage('assets/BG5.jpg');
+                                  // .setBackgroundImage('assets/BG5.jpg');
                             },
                             child: SizedBox(
                               height: 80,
@@ -312,7 +332,6 @@ class BackGroundDesignOptions extends StatelessWidget {
                           ),
                         ],
                       ),
-                
                     ],
                   ),
                 ),
@@ -433,8 +452,7 @@ class BackGroundDesignOptions extends StatelessWidget {
                       ///accent blue color
                       GestureDetector(
                         onTap: () {
-                            sketchProvider.setBackgroundColor(Colors.white10);
-                         
+                          sketchProvider.setBackgroundColor(Colors.white10);
                         },
                         child: Container(
                           margin: const EdgeInsets.only(right: 15, left: 20),

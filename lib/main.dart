@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_board_app/provider/color_provider.dart';
-// import 'package:smart_board_app/provider/sketch_data_provider.dart';
 import 'package:smart_board_app/provider/sketch_provider.dart';
 import 'package:smart_board_app/screens/home.dart';
 
@@ -18,11 +16,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
     ChangeNotifierProvider(
-      create: (context) => ColorProvider()),
-    ChangeNotifierProvider(
       create: (context) => SketchProvider()),
-    // ChangeNotifierProvider(
-    //   create: (context) => SketchDataProvider()),
 
       ],
       child: MaterialApp(

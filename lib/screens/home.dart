@@ -36,9 +36,6 @@ class _SketchViewState extends State<SketchView>
               height: double.maxFinite,
               child: DrawingCanvas(),
             ),
-
-            ///user avater and login
-            // const UserLoginTag(),
             Positioned(
                 top: 10,
                 right: 10,
@@ -101,7 +98,7 @@ class _SketchViewState extends State<SketchView>
                       ),
                       onPressed: () {
                         setState(() {
-                        showEraserSkider = false;
+                          showEraserSkider = false;
                           showBackgroundOption = false;
                           sideBackgroundImageList = false;
                           showPencilOptions = !showPencilOptions;
@@ -132,9 +129,7 @@ class _SketchViewState extends State<SketchView>
                         color: Colors.black,
                       ),
                       onPressed: () {
-                        setState(() {
-                          
-                        });
+                        setState(() {});
                         showEraserSkider = false;
                         context.read<SketchProvider>().clearCanvas();
                       },
@@ -176,7 +171,7 @@ class _SketchViewState extends State<SketchView>
                       ),
                       onPressed: () {
                         setState(() {
-                        showEraserSkider = false;
+                          showEraserSkider = false;
                           showPencilOptions = false;
                           sideBackgroundImageList = !sideBackgroundImageList;
                           showBackgroundOption = !showBackgroundOption;
@@ -188,7 +183,8 @@ class _SketchViewState extends State<SketchView>
                       icon: const Icon(Icons.hide_image_outlined),
                       onPressed: () {
                         showEraserSkider = false;
-                        sketchProvider.setBackgroundColor(Colors.white);
+                        sketchProvider.clearCachedImage();
+                        // setBackgroundColor(Colors.white);
                       },
                     ),
 
@@ -290,8 +286,7 @@ class _SketchViewState extends State<SketchView>
                               GestureDetector(
                                 onTap: () {
                                   setState(() {
-                                    sketchProvider
-                                        .setBackgroundImage('assets/BG.png');
+                                    sketchProvider.loadImage('assets/BG.png');
                                   });
                                 },
                                 child: SizedBox(
@@ -309,8 +304,7 @@ class _SketchViewState extends State<SketchView>
                               //BG2
                               GestureDetector(
                                 onTap: () {
-                                  sketchProvider
-                                      .setBackgroundImage('assets/BG1.jpg');
+                                  sketchProvider.loadImage('assets/BG1.jpg');
                                 },
                                 child: SizedBox(
                                   height: 80,
@@ -327,8 +321,7 @@ class _SketchViewState extends State<SketchView>
                               //BG3
                               GestureDetector(
                                 onTap: () {
-                                  sketchProvider
-                                      .setBackgroundImage('assets/BG2.jpg');
+                                  sketchProvider.loadImage('assets/BG2.jpg');
                                 },
                                 child: SizedBox(
                                   height: 80,
@@ -346,8 +339,7 @@ class _SketchViewState extends State<SketchView>
                               ///second roll
                               GestureDetector(
                                 onTap: () {
-                                  sketchProvider
-                                      .setBackgroundImage('assets/BG3.png');
+                                  sketchProvider.loadImage('assets/BG3.png');
                                 },
                                 child: SizedBox(
                                   height: 80,
@@ -364,8 +356,7 @@ class _SketchViewState extends State<SketchView>
                               //BG5
                               GestureDetector(
                                 onTap: () {
-                                  sketchProvider
-                                      .setBackgroundImage('assets/BG4.png');
+                                  sketchProvider.loadImage('assets/BG4.png');
                                 },
                                 child: SizedBox(
                                   height: 80,
@@ -382,8 +373,7 @@ class _SketchViewState extends State<SketchView>
                               //BG6
                               GestureDetector(
                                 onTap: () {
-                                  sketchProvider
-                                      .setBackgroundImage('assets/BG5.jpg');
+                                  sketchProvider.loadImage('assets/BG5.jpg');
                                 },
                                 child: SizedBox(
                                   height: 80,
@@ -401,8 +391,7 @@ class _SketchViewState extends State<SketchView>
                               ///3rd roll
                               GestureDetector(
                                 onTap: () {
-                                  sketchProvider
-                                      .setBackgroundImage('assets/BG3.png');
+                                  sketchProvider.loadImage('assets/BG3.png');
                                 },
                                 child: SizedBox(
                                   height: 80,
@@ -419,8 +408,7 @@ class _SketchViewState extends State<SketchView>
                               //BG5
                               GestureDetector(
                                 onTap: () {
-                                  sketchProvider
-                                      .setBackgroundImage('assets/BG4.png');
+                                  sketchProvider.loadImage('assets/BG4.png');
                                 },
                                 child: SizedBox(
                                   height: 80,
@@ -437,8 +425,7 @@ class _SketchViewState extends State<SketchView>
                               //BG6
                               GestureDetector(
                                 onTap: () {
-                                  sketchProvider
-                                      .setBackgroundImage('assets/BG6.jpg');
+                                  sketchProvider.loadImage('assets/BG6.jpg');
                                 },
                                 child: SizedBox(
                                   height: 80,
@@ -475,7 +462,7 @@ class _SketchViewState extends State<SketchView>
                         child: ListView(
                           children: [
                             Container(
-                              margin: EdgeInsets.only(bottom: 10),
+                              margin: const EdgeInsets.only(bottom: 10),
                               padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
                                   color: Colors.white,
@@ -509,7 +496,7 @@ class _SketchViewState extends State<SketchView>
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(bottom: 10),
+                              margin: const EdgeInsets.only(bottom: 10),
                               padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
                                   color: Colors.white,
@@ -543,7 +530,7 @@ class _SketchViewState extends State<SketchView>
                               ),
                             ),
                             Container(
-                              margin: EdgeInsets.only(bottom: 10),
+                              margin: const EdgeInsets.only(bottom: 10),
                               padding: const EdgeInsets.all(20),
                               decoration: BoxDecoration(
                                   color: Colors.white,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:smart_board_app/provider/sketch_provider.dart';
 import 'package:smart_board_app/screens/home.dart';
 
 class UserLoginTag extends StatefulWidget {
@@ -14,6 +16,7 @@ class UserLoginTag extends StatefulWidget {
 class _UserLoginTagState extends State<UserLoginTag> {
   @override
   Widget build(BuildContext context) {
+    final sketchProvider = context.watch<SketchProvider>();
     return Positioned(
         top: 10,
         right: 10,

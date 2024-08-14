@@ -1,4 +1,9 @@
+import 'dart:ui' as ui;
+
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:smart_board_app/models/sketch_model.dart';
 import 'package:smart_board_app/screens/home.dart';
 
@@ -31,37 +36,33 @@ class SketchProvider extends ChangeNotifier {
   }
 
   toggleEraser() {
-  isEraserActive = !isEraserActive;
-  selectedColor = isEraserActive ? backgroundColor : Colors.black;
-  strokeWidth = isEraserActive ? eraserSize : 3.0;
-  notifyListeners();
-}
+    isEraserActive = !isEraserActive;
+    selectedColor = isEraserActive ? backgroundColor : Colors.black;
+    strokeWidth = isEraserActive ? eraserSize : 3.0;
+    notifyListeners();
+  }
 
   updateEraserSize(double size) {
-  eraserSize = size;
-  if (isEraserActive) {
-    strokeWidth = eraserSize;
+    eraserSize = size;
+    if (isEraserActive) {
+      strokeWidth = eraserSize;
+    }
+    notifyListeners();
   }
-  notifyListeners();
-}
-
-  // void toggleEraser() {
-  //   isEraserActive = !isEraserActive;
-  //   selectedColor = isEraserActive ? backgroundColor : backgroundColor;
-  //   notifyListeners();
-  // }
 
   void startDrawing(Offset point) {
     currentPath = Path()..moveTo(point.dx, point.dy);
     notifyListeners();
   }
 
-  void addPoint(Offset point) {
+  void addPoint(Offset point, {bool isErasing = false}) {
     if (sketches.isEmpty || sketches.last.points.isEmpty) {
       sketches.add(Sketch(
         points: [point],
-        color: selectedColor,
+        color: isErasing ? Colors.transparent : selectedColor,
+        // color: selectedColor,
         strokeWidth: strokeWidth,
+      isErasing: isErasing,
         type: SketchType.scribble,
         paths: Path(),
       ));
@@ -76,6 +77,7 @@ class SketchProvider extends ChangeNotifier {
         points: [],
         color: selectedColor,
         strokeWidth: strokeWidth,
+        isErasing: isEraserActive,
         type: SketchType.line,
         filled: true,
         paths: Path()
@@ -134,18 +136,33 @@ class SketchProvider extends ChangeNotifier {
     }
   }
 
-  ///background imae / template
+  ///background color
   void setBackgroundColor(Color color) {
     _backgroundColor = color;
-    _eraserColor = color;
-    _backgroundImage = null;
-    selectedColor = isEraserActive ? color : Colors.black;
+    clearCachedImage();
+    selectedColor = isEraserActive ? backgroundColor : Colors.black;
     notifyListeners();
   }
 
-  void setBackgroundImage(String imagePath) {
-    _backgroundImage = imagePath;
-    _backgroundColor = Colors.transparent; // Set to transparent to show image
+///handling the background image
+///when it is selected
+  ui.Image? _cachedImage;
+
+  ui.Image? get cachedImage => _cachedImage;
+
+  Future<void> loadImage(String imagePath) async {
+    final ByteData data = await rootBundle.load(imagePath); // Load from assets
+    final Uint8List bytes =
+        data.buffer.asUint8List(); // Convert directly to Uint8List
+    final ui.Codec codec = await ui.instantiateImageCodec(bytes);
+    final ui.FrameInfo frame = await codec.getNextFrame();
+    _cachedImage = frame.image;
+    notifyListeners();
+  }
+
+  // clear the cached image when needed
+  void clearCachedImage() {
+    _cachedImage = null;
     notifyListeners();
   }
 }
