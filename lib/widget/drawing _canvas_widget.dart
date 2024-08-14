@@ -14,7 +14,8 @@ class DrawingCanvas extends StatelessWidget {
       onPanUpdate: (details) {
         RenderBox renderBox = context.findRenderObject() as RenderBox;
         Offset localPosition = renderBox.globalToLocal(details.globalPosition);
-        sketchProvider.addPoint(localPosition, isErasing: sketchProvider.isEraserActive);
+        sketchProvider.addPoint(localPosition,
+            isErasing: sketchProvider.isEraserActive);
         showPencilOptions = false;
         showBackgroundOption = false;
         sideBackgroundImageList = false;
@@ -26,9 +27,7 @@ class DrawingCanvas extends StatelessWidget {
       child: CustomPaint(
         painter: _DrawingPainter(
           sketchProvider,
-          sketchProvider.isEraserActive
-              ? sketchProvider.backgroundColor
-              : sketchProvider.backgroundColor,
+          sketchProvider.backgroundColor,
           sketchProvider.cachedImage,
         ),
         size: Size.infinite,
@@ -65,23 +64,36 @@ class _DrawingPainter extends CustomPainter {
       canvas.drawRect(
           Rect.fromLTWH(0, 0, size.width, size.height), backgroundPaint);
     }
+    canvas.saveLayer(Rect.fromLTWH(0, 0, size.width, size.height), Paint());
 
     for (var sketch in sketchProvider.sketches) {
-      Paint paint = Paint()
-        ..color = sketch.color
-        ..strokeWidth = sketch.strokeWidth
-        ..isAntiAlias = true
-        ..strokeCap = StrokeCap.round
-        ..blendMode = sketch.isErasing ? BlendMode.clear : BlendMode.srcOver;
+      Paint paint = Paint();
+      if (!sketch.isErasing) {
+        paint
+          ..color = sketch.color
+          ..strokeWidth = sketch.strokeWidth
+          ..isAntiAlias = true
+          ..strokeCap = StrokeCap.round;
+      } else {
+        paint
+          ..color =
+              backgroundImage == null ? backgroundColor : Colors.transparent
+          ..blendMode =
+              backgroundImage == null ? BlendMode.srcOver : BlendMode.clear
+          ..strokeWidth = sketch.strokeWidth
+          ..isAntiAlias = true
+          ..strokeCap = StrokeCap.round;
+      }
+
       canvas.drawPath(sketch.paths, paint);
 
       for (int i = 0; i < sketch.points.length - 1; i++) {
         canvas.drawLine(sketch.points[i], sketch.points[i + 1], paint);
       }
-      if (sketch.color != Colors.transparent) {
-        canvas.drawPath(sketch.paths, paint);
-      }
+
+      canvas.drawPath(sketch.paths, paint);
     }
+    canvas.restore();
   }
 
   @override

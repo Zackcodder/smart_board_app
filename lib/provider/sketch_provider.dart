@@ -1,7 +1,5 @@
 import 'dart:ui' as ui;
 
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:smart_board_app/models/sketch_model.dart';
@@ -37,7 +35,6 @@ class SketchProvider extends ChangeNotifier {
 
   toggleEraser() {
     isEraserActive = !isEraserActive;
-    selectedColor = isEraserActive ? backgroundColor : Colors.black;
     strokeWidth = isEraserActive ? eraserSize : 3.0;
     notifyListeners();
   }
@@ -59,10 +56,9 @@ class SketchProvider extends ChangeNotifier {
     if (sketches.isEmpty || sketches.last.points.isEmpty) {
       sketches.add(Sketch(
         points: [point],
-        color: isErasing ? Colors.transparent : selectedColor,
-        // color: selectedColor,
+        color: selectedColor,
         strokeWidth: strokeWidth,
-      isErasing: isErasing,
+        isErasing: isErasing,
         type: SketchType.scribble,
         paths: Path(),
       ));
@@ -139,13 +135,13 @@ class SketchProvider extends ChangeNotifier {
   ///background color
   void setBackgroundColor(Color color) {
     _backgroundColor = color;
+    print(color.toString());
     clearCachedImage();
-    selectedColor = isEraserActive ? backgroundColor : Colors.black;
     notifyListeners();
   }
 
-///handling the background image
-///when it is selected
+  ///handling the background image
+  ///when it is selected
   ui.Image? _cachedImage;
 
   ui.Image? get cachedImage => _cachedImage;
