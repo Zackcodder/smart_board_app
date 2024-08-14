@@ -69,21 +69,19 @@ class _DrawingPainter extends CustomPainter {
     for (var sketch in sketchProvider.sketches) {
       Paint paint = Paint();
       if (!sketch.isErasing) {
-        paint
-          ..color = sketch.color
-          ..strokeWidth = sketch.strokeWidth
-          ..isAntiAlias = true
-          ..strokeCap = StrokeCap.round;
+        paint.color = sketch.color;
       } else {
         paint
           ..color =
               backgroundImage == null ? backgroundColor : Colors.transparent
           ..blendMode =
-              backgroundImage == null ? BlendMode.srcOver : BlendMode.clear
-          ..strokeWidth = sketch.strokeWidth
-          ..isAntiAlias = true
-          ..strokeCap = StrokeCap.round;
+              backgroundImage == null ? BlendMode.srcOver : BlendMode.clear;
       }
+
+      paint
+        ..strokeWidth = sketch.strokeWidth
+        ..isAntiAlias = true
+        ..strokeCap = StrokeCap.round;
 
       canvas.drawPath(sketch.paths, paint);
 
