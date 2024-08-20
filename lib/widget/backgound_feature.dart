@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_board_app/provider/new_provider.dart';
+import 'package:smart_board_app/provider/new_sketech_provider.dart';
 import 'package:smart_board_app/provider/sketch_provider.dart';
 
 class BackGroundDesignOptions extends StatelessWidget {
@@ -9,6 +11,7 @@ class BackGroundDesignOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sketchProvider = context.watch<SketchProvider>();
+    final allSketchProvider = context.watch<AllSketchesNotifier>();
     return Positioned(
       bottom: 50,
       right: 160,
@@ -97,6 +100,7 @@ class BackGroundDesignOptions extends StatelessWidget {
                           ///BG1
                           GestureDetector(
                             onTap: () {
+                              
                               sketchProvider.loadImage('assets/BG.png');
                               // .setBackgroundImage('assets/BG.png');
                             },

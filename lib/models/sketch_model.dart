@@ -10,25 +10,25 @@ class Sketch {
   final SketchType type;
   bool isErasing;
   final bool filled;
-  // final int sides;
+  final int sides;
 
   Sketch({
     required this.points,
     required this.paths,
     required this.strokeWidth,
     required this.color,
-    this.type = SketchType.line,
+    this.type = SketchType.scribble,
     this.filled = false,
     // this.isErasing = false,
     required this.isErasing,
-    // this.sides = 3,
+    this.sides = 3,
     // required this.size,
   });
 
   factory Sketch.fromDrawingMode(
     Sketch sketch,
     DrawingMode drawingMode,
-    // bool filled,
+    bool filled,
   ) {
     return Sketch(
       points: sketch.points,
@@ -38,12 +38,12 @@ class Sketch {
       isErasing: sketch.isErasing,
       strokeWidth: sketch.strokeWidth,
       
-      // filled: drawingMode == DrawingMode.line ||
-      //         drawingMode == DrawingMode.pencil ||
-      //         drawingMode == DrawingMode.eraser
-      //     ? false
-      //     : filled,
-      // sides: sketch.sides,
+      filled: drawingMode == DrawingMode.line ||
+              drawingMode == DrawingMode.pencil ||
+              drawingMode == DrawingMode.eraser
+          ? false
+          : filled,
+      sides: sketch.sides,
       type: () {
         switch (drawingMode) {
           case DrawingMode.eraser:
@@ -71,11 +71,11 @@ class Sketch {
       'points': pointsMap,
       'color': color.toHex(),
       // 'size': size,
-      // 'filled': filled,
+      'filled': filled,
       'strokeWidth': strokeWidth,
       'isErasing': isErasing,
       'type': type.toRegularString(),
-      // 'sides': sides,
+      'sides': sides,
     };
   }
 
@@ -89,14 +89,14 @@ class Sketch {
       // size: json['size'],
       strokeWidth: json['strokeWidth'],
       isErasing: json['isErasing'],
-      // filled: json['filled'],
+      filled: json['filled'],
       type: (json['type'] as String).toSketchTypeEnum(),
-      // sides: json['sides'],
+      sides: json['sides'],
     );
   }
 }
 
-enum SketchType { line, pencil, scribble, square, circle, polygon }
+enum SketchType { scribble, square, circle, polygon,line, pencil,  }
 
 extension SketchTypeX on SketchType {
   String toRegularString() => toString().split('.')[1];

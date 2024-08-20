@@ -5,13 +5,21 @@ import 'package:provider/provider.dart';
 import 'package:smart_board_app/provider/sketch_provider.dart';
 import 'package:smart_board_app/screens/home.dart';
 
-class DrawingCanvas extends StatelessWidget {
+class DrawingCanvas extends StatefulWidget {
+  const DrawingCanvas({super.key});
+
+  @override
+  State<DrawingCanvas> createState() => _DrawingCanvasState();
+}
+
+class _DrawingCanvasState extends State<DrawingCanvas> {
   @override
   Widget build(BuildContext context) {
     final sketchProvider = Provider.of<SketchProvider>(context);
 
     return GestureDetector(
       onPanUpdate: (details) {
+        setState(() {
         RenderBox renderBox = context.findRenderObject() as RenderBox;
         Offset localPosition = renderBox.globalToLocal(details.globalPosition);
         sketchProvider.addPoint(localPosition,
@@ -19,10 +27,13 @@ class DrawingCanvas extends StatelessWidget {
         showPencilOptions = false;
         showBackgroundOption = false;
         sideBackgroundImageList = false;
+        });
       },
       onPanEnd: (details) {
+        setState(() {
         sketchProvider.endDrawing();
         context.read<SketchProvider>().updateSketches(sketchProvider.sketches);
+        });
       },
       child: CustomPaint(
         painter: _DrawingPainter(
@@ -36,11 +47,9 @@ class DrawingCanvas extends StatelessWidget {
   }
 }
 
-///
 class _DrawingPainter extends CustomPainter {
   final SketchProvider sketchProvider;
   final Color backgroundColor;
-  // final String? backgroundImage;
   final ui.Image? backgroundImage;
 
   _DrawingPainter(
@@ -64,7 +73,10 @@ class _DrawingPainter extends CustomPainter {
       canvas.drawRect(
           Rect.fromLTWH(0, 0, size.width, size.height), backgroundPaint);
     }
+//     canvas.save();
+// canvas.clipRect(Rect.fromLTWH(0, 0, size.width, size.height));
     canvas.saveLayer(Rect.fromLTWH(0, 0, size.width, size.height), Paint());
+canvas.clipRect(Rect.fromLTWH(0, 0, size.width, size.height));
 
     for (var sketch in sketchProvider.sketches) {
       Paint paint = Paint();
@@ -80,10 +92,8 @@ class _DrawingPainter extends CustomPainter {
 
       paint
         ..strokeWidth = sketch.strokeWidth
-        ..isAntiAlias = true
+        ..isAntiAlias = false
         ..strokeCap = StrokeCap.round;
-
-      canvas.drawPath(sketch.paths, paint);
 
       for (int i = 0; i < sketch.points.length - 1; i++) {
         canvas.drawLine(sketch.points[i], sketch.points[i + 1], paint);
@@ -99,5 +109,4 @@ class _DrawingPainter extends CustomPainter {
     return true;
   }
 
-  ///
 }

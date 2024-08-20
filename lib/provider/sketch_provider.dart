@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class SketchProvider extends ChangeNotifier {
   Color _backgroundColor = Colors.white;
   Color get backgroundColor => _backgroundColor;
 
-  Color _eraserColor = Colors.white;
+  final Color _eraserColor = Colors.white;
   Color get eraserColor => _eraserColor;
 
   ///background template
@@ -52,7 +53,8 @@ class SketchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void addPoint(Offset point, {bool isErasing = false}) {
+
+  addPoint(Offset point, {bool isErasing = false}) {
     if (sketches.isEmpty || sketches.last.points.isEmpty) {
       sketches.add(Sketch(
         points: [point],
@@ -65,7 +67,10 @@ class SketchProvider extends ChangeNotifier {
     } else {
       sketches.last.points.add(point);
     }
+    // Notify listeners every 3 points added to reduce UI lag
+  if (sketches.last.points.length % 2 == 0) {
     notifyListeners();
+  }
   }
 
   void endDrawing() {
@@ -93,6 +98,8 @@ class SketchProvider extends ChangeNotifier {
   }
 
   void clearCanvas() {
+    strokeWidth = 3.0;
+    isEraserActive = false;
     redoStack.clear();
     undoStack.add(List.from(sketches));
     sketches.clear();
@@ -121,7 +128,6 @@ class SketchProvider extends ChangeNotifier {
       redoStack.add(List.from(sketches));
       notifyListeners();
     }
-    notifyListeners();
   }
 
   void redo() {
@@ -135,6 +141,8 @@ class SketchProvider extends ChangeNotifier {
   ///background color
   void setBackgroundColor(Color color) {
     _backgroundColor = color;
+    strokeWidth = 3.0;
+    isEraserActive = false;
     print(color.toString());
     clearCachedImage();
     notifyListeners();
@@ -153,12 +161,17 @@ class SketchProvider extends ChangeNotifier {
     final ui.Codec codec = await ui.instantiateImageCodec(bytes);
     final ui.FrameInfo frame = await codec.getNextFrame();
     _cachedImage = frame.image;
+    isEraserActive = false;
+    strokeWidth = 3.0;
+    _backgroundColor = Colors.transparent;
     notifyListeners();
   }
 
   // clear the cached image when needed
   void clearCachedImage() {
     _cachedImage = null;
+    isEraserActive = false;
+    strokeWidth = 3.0;
     notifyListeners();
   }
 }

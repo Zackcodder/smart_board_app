@@ -34,7 +34,7 @@ class _SketchViewState extends State<SketchView>
               color: Colors.white,
               width: double.maxFinite,
               height: double.maxFinite,
-              child: DrawingCanvas(),
+              child: const DrawingCanvas(),
             ),
             Positioned(
                 top: 10,
@@ -102,6 +102,8 @@ class _SketchViewState extends State<SketchView>
                           showBackgroundOption = false;
                           sideBackgroundImageList = false;
                           showPencilOptions = !showPencilOptions;
+                          sketchProvider.isEraserActive = false;
+                          sketchProvider.strokeWidth = 3.0;
                         });
                       },
                     ),
@@ -209,7 +211,7 @@ class _SketchViewState extends State<SketchView>
                       ),
                       onPressed: () {
                         setState(() {
-                          showLoginOptions = !showLoginOptions;
+                          // showLoginOptions = !showLoginOptions;
                         });
                         // drawingState.clearCanvas();
                       },
@@ -258,7 +260,7 @@ class _SketchViewState extends State<SketchView>
             // Pencil Settings UI
             Consumer<SketchProvider>(builder: (context, provider, child) {
               return showPencilOptions
-                  ? PencilToolOptions()
+                  ? const PencilToolOptions()
                   : const SizedBox.shrink();
             }),
 
@@ -623,27 +625,29 @@ class _SketchViewState extends State<SketchView>
             }),
 
             ///eraser slider
-            Consumer<SketchProvider>(builder: (context, provider, child) {
-              return showEraserSkider
-                  ? Positioned(
-                      left: 500,
-                      bottom: 50,
-                      child: SizedBox(
-                        width: 300,
-                        child:
-                            //the slider for stroke width thickness
-                            Slider(
-                          min: 3.0,
-                          max: 50.0,
-                          value: sketchProvider.strokeWidth,
-                          onChanged: (value) {
-                            sketchProvider.updateStrokeWidth(value);
-                          },
+            Consumer<SketchProvider>(
+              builder: (context, provider, child) {
+                return showEraserSkider
+                    ? Positioned(
+                        left: 500,
+                        bottom: 50,
+                        child: SizedBox(
+                          width: 300,
+                          child:
+                              //the slider for stroke width thickness
+                              Slider(
+                            min: 3.0,
+                            max: 50.0,
+                            value: sketchProvider.strokeWidth,
+                            onChanged: (value) {
+                              sketchProvider.updateStrokeWidth(value);
+                            },
+                          ),
                         ),
-                      ),
-                    )
-                  : const SizedBox.shrink();
-            }),
+                      )
+                    : const SizedBox.shrink();
+              },
+            ),
           ],
         ),
       ),

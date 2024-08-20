@@ -2,13 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_board_app/provider/new_provider.dart';
 import 'package:smart_board_app/provider/sketch_provider.dart';
 
 ///
 class PencilToolOptions extends StatelessWidget {
+  const PencilToolOptions({super.key});
+
   @override
   Widget build(BuildContext context) {
     final sketchProvider = context.watch<SketchProvider>();
+    final newSketchProvider = context.watch<AllSketchesNotifier>();
 
     return Positioned(
       bottom: 50,
@@ -54,7 +58,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///first thickness
                     GestureDetector(
                       onTap: () {
-                        sketchProvider.updateStrokeWidth(20);
+                        newSketchProvider.updateStrokeWidth(9);
                        
                       },
                       child: const CircleAvatar(
@@ -69,7 +73,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///secind thickness
                     GestureDetector(
                       onTap: () {
-                        sketchProvider.updateStrokeWidth(30);
+                        newSketchProvider.updateStrokeWidth(10);
                         
                       },
                       child: const CircleAvatar(
@@ -84,7 +88,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///3rd thickness
                     GestureDetector(
                       onTap: () {
-                          sketchProvider.updateStrokeWidth(40);
+                          newSketchProvider.updateStrokeWidth(12);
                         
                       },
                       child: const CircleAvatar(
@@ -108,7 +112,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///first thickness
                     GestureDetector(
                       onTap: () {
-                        sketchProvider.updateStrokeWidth(5);
+                        newSketchProvider.updateStrokeWidth(5);
                       },
                       child: const CircleAvatar(
                         radius: 5,
@@ -122,7 +126,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///secind thickness
                     GestureDetector(
                       onTap: () {
-                        sketchProvider.updateStrokeWidth(10);
+                        newSketchProvider.updateStrokeWidth(7);
                       },
                       child: const CircleAvatar(
                         radius: 7,
@@ -136,7 +140,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///3rd thickness
                     GestureDetector(
                       onTap: () {
-                        sketchProvider.updateStrokeWidth(15);
+                        newSketchProvider.updateStrokeWidth(9);
                       },
                       child: const CircleAvatar(
                         radius: 9,
@@ -155,9 +159,9 @@ class PencilToolOptions extends StatelessWidget {
                       Slider(
                     min: 3.0,
                     max: 50.0,
-                    value: sketchProvider.strokeWidth,
+                    value: newSketchProvider.strokeWidth,
                     onChanged: (value) {
-                      sketchProvider.updateStrokeWidth(value);
+                      newSketchProvider.updateStrokeWidth(value);
                     },
                   ),
                 ),
@@ -168,7 +172,7 @@ class PencilToolOptions extends StatelessWidget {
             BlockPicker(
               pickerColor: sketchProvider.selectedColor,
               onColorChanged: (color) {
-                              sketchProvider.updateColor(color);
+                              newSketchProvider.updateColor(color);
                 
               },
             ),
@@ -179,9 +183,9 @@ class PencilToolOptions extends StatelessWidget {
               labelTypes: const [],
               pickerAreaHeightPercent: 0.5,
               enableAlpha: false,
-              pickerColor: sketchProvider.selectedColor,
+              pickerColor: newSketchProvider.selectedColor,
               onColorChanged: (color) {
-                sketchProvider.updateColor(color);
+                newSketchProvider.updateColor(color);
               },
             ),
           ],
