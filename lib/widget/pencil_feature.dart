@@ -3,7 +3,6 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_board_app/provider/new_provider.dart';
-import 'package:smart_board_app/provider/sketch_provider.dart';
 
 ///
 class PencilToolOptions extends StatelessWidget {
@@ -11,7 +10,6 @@ class PencilToolOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sketchProvider = context.watch<SketchProvider>();
     final newSketchProvider = context.watch<AllSketchesNotifier>();
 
     return Positioned(
@@ -59,7 +57,6 @@ class PencilToolOptions extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         newSketchProvider.updateStrokeWidth(9);
-                       
                       },
                       child: const CircleAvatar(
                         radius: 10,
@@ -74,7 +71,6 @@ class PencilToolOptions extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         newSketchProvider.updateStrokeWidth(10);
-                        
                       },
                       child: const CircleAvatar(
                         radius: 15,
@@ -88,8 +84,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///3rd thickness
                     GestureDetector(
                       onTap: () {
-                          newSketchProvider.updateStrokeWidth(12);
-                        
+                        newSketchProvider.updateStrokeWidth(12);
                       },
                       child: const CircleAvatar(
                         radius: 20,
@@ -99,7 +94,9 @@ class PencilToolOptions extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
 
                 ///2nd roll for strock thickness and pen for dash line
                 Row(
@@ -150,7 +147,10 @@ class PencilToolOptions extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
+
                 ///stroker thickness slider
                 SizedBox(
                   width: 300,
@@ -170,13 +170,12 @@ class PencilToolOptions extends StatelessWidget {
 
             // Color Picker
             BlockPicker(
-              pickerColor: sketchProvider.selectedColor,
+              pickerColor: newSketchProvider.selectedColor,
               onColorChanged: (color) {
-                              newSketchProvider.updateColor(color);
-                
+                newSketchProvider.updateColor(color);
               },
             ),
-           
+
             ///color pallette
             ColorPicker(
               colorPickerWidth: 200,

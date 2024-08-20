@@ -1,6 +1,6 @@
 import 'dart:math' as math;
-import 'dart:ui';
 import 'dart:ui' as ui;
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,7 +8,8 @@ import 'package:smart_board_app/models/drawing_model.dart';
 import 'package:smart_board_app/models/sketch_model.dart';
 import 'package:smart_board_app/provider/new_provider.dart';
 import 'package:smart_board_app/provider/sketch_provider.dart';
-import 'package:smart_board_app/screens/home.dart';
+
+import '../screens/newHome.dart';
 
 class NewDrawingCanvas extends StatefulWidget {
   final double height;
@@ -38,6 +39,7 @@ class _NewDrawingCanvasState extends State<NewDrawingCanvas> {
   }
 
   void onPointerDown(PointerDownEvent details, BuildContext context) {
+    showPencilOptions.value = false;
     final box = context.findRenderObject() as RenderBox;
     final offset = box.globalToLocal(details.position);
 
@@ -59,7 +61,8 @@ class _NewDrawingCanvasState extends State<NewDrawingCanvas> {
 
     final currentSketch = Sketch.fromDrawingMode(
       Sketch(
-        isErasing: Provider.of<AllSketchesNotifier>(context, listen: false).isEraserActive,
+        isErasing: Provider.of<AllSketchesNotifier>(context, listen: false)
+            .isEraserActive,
         paths: Path(),
         points: [offset],
         strokeWidth:
@@ -119,13 +122,6 @@ class _NewDrawingCanvasState extends State<NewDrawingCanvas> {
   }
 
   void onPointerUp(PointerUpEvent details, BuildContext context) {
-//   setState(() {
-//        showPencilOptions = false;
-//  showBackgroundOption = false;
-//  sideBackgroundImageList = false;
-//  showLoginOptions = false;
-//  showEraserSkider = false;
-//   });
     final currentSketch =
         Provider.of<AllSketchesNotifier>(context, listen: false).sketch;
 

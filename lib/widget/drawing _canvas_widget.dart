@@ -20,19 +20,22 @@ class _DrawingCanvasState extends State<DrawingCanvas> {
     return GestureDetector(
       onPanUpdate: (details) {
         setState(() {
-        RenderBox renderBox = context.findRenderObject() as RenderBox;
-        Offset localPosition = renderBox.globalToLocal(details.globalPosition);
-        sketchProvider.addPoint(localPosition,
-            isErasing: sketchProvider.isEraserActive);
-        showPencilOptions = false;
-        showBackgroundOption = false;
-        sideBackgroundImageList = false;
+          RenderBox renderBox = context.findRenderObject() as RenderBox;
+          Offset localPosition =
+              renderBox.globalToLocal(details.globalPosition);
+          sketchProvider.addPoint(localPosition,
+              isErasing: sketchProvider.isEraserActive);
+          showPencilOptions = false;
+          showBackgroundOption = false;
+          sideBackgroundImageList = false;
         });
       },
       onPanEnd: (details) {
         setState(() {
-        sketchProvider.endDrawing();
-        context.read<SketchProvider>().updateSketches(sketchProvider.sketches);
+          sketchProvider.endDrawing();
+          context
+              .read<SketchProvider>()
+              .updateSketches(sketchProvider.sketches);
         });
       },
       child: CustomPaint(
@@ -76,7 +79,7 @@ class _DrawingPainter extends CustomPainter {
 //     canvas.save();
 // canvas.clipRect(Rect.fromLTWH(0, 0, size.width, size.height));
     canvas.saveLayer(Rect.fromLTWH(0, 0, size.width, size.height), Paint());
-canvas.clipRect(Rect.fromLTWH(0, 0, size.width, size.height));
+    canvas.clipRect(Rect.fromLTWH(0, 0, size.width, size.height));
 
     for (var sketch in sketchProvider.sketches) {
       Paint paint = Paint();
@@ -108,5 +111,4 @@ canvas.clipRect(Rect.fromLTWH(0, 0, size.width, size.height));
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
   }
-
 }

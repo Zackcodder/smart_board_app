@@ -59,7 +59,6 @@ class AllSketchesNotifier extends ChangeNotifier {
     final ui.FrameInfo frame = await codec.getNextFrame();
     _cachedImage = frame.image;
     isEraserActive = false;
-    strokeWidth = 3.0;
     notifyListeners();
   }
 
@@ -67,28 +66,10 @@ class AllSketchesNotifier extends ChangeNotifier {
   void clearCachedImage() {
     _cachedImage = null;
     isEraserActive = false;
-    strokeWidth = 3.0;
     notifyListeners();
   }
 
   ///redo and undo
-  List<List<Sketch>> undoStack = [];
-  List<List<Sketch>> redoStack = [];
-  undo() {
-    if (undoStack.isNotEmpty) {
-      sketches = undoStack.removeLast();
-      redoStack.add(List.from(sketches));
-      notifyListeners();
-    }
-  }
-
-  void redo() {
-    if (redoStack.isNotEmpty) {
-      undoStack.add(List.from(sketches));
-      sketches = redoStack.removeLast();
-      notifyListeners();
-    }
-  }
 
   //stroke color
   Color selectedColor = Colors.black;
@@ -110,18 +91,14 @@ class AllSketchesNotifier extends ChangeNotifier {
   Color get eraserColor => _eraserColor;
   bool isEraserActive = false;
 
-  toggleEraser() {
-    isEraserActive = !isEraserActive;
-    strokeWidth = isEraserActive ? eraserSize : 3.0;
+  toggleEraser(bool active) {
+    isEraserActive = active;
     selectedColor = isEraserActive ? backgroundColor : selectedColor;
     notifyListeners();
   }
 
   updateEraserSize(double size) {
     eraserSize = size;
-    if (isEraserActive) {
-      strokeWidth = eraserSize;
-    }
     notifyListeners();
   }
 
@@ -132,11 +109,8 @@ class AllSketchesNotifier extends ChangeNotifier {
   //   notifyListeners();
   // }
   clearCanvas() {
-    // strokeWidth = 3.0;
     isEraserActive = false;
-    redoStack.clear();
-    undoStack.add(List.from(sketches));
-    sketches.clear();
+    sketches = [];
     notifyListeners();
   }
 
