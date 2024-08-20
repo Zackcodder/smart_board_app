@@ -39,7 +39,6 @@ class AllSketchesNotifier extends ChangeNotifier {
   Color get backgroundColor => _backgroundColor;
   setBackgroundColor(Color color) {
     _backgroundColor = color;
-    isEraserActive = false;
     //   clearCachedImage();
     // _backgroundImage = null; // Clear the image when color is set
     notifyListeners();
@@ -58,14 +57,12 @@ class AllSketchesNotifier extends ChangeNotifier {
     final ui.Codec codec = await ui.instantiateImageCodec(bytes);
     final ui.FrameInfo frame = await codec.getNextFrame();
     _cachedImage = frame.image;
-    isEraserActive = false;
     notifyListeners();
   }
 
   // clear the cached image when needed
   void clearCachedImage() {
     _cachedImage = null;
-    isEraserActive = false;
     notifyListeners();
   }
 
@@ -87,13 +84,10 @@ class AllSketchesNotifier extends ChangeNotifier {
 
   ///eraser size
   double eraserSize = 3.0;
-  final Color _eraserColor = Colors.white;
-  Color get eraserColor => _eraserColor;
   bool isEraserActive = false;
 
   toggleEraser(bool active) {
     isEraserActive = active;
-    selectedColor = isEraserActive ? backgroundColor : selectedColor;
     notifyListeners();
   }
 

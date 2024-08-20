@@ -53,7 +53,6 @@ class SketchProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-
   addPoint(Offset point, {bool isErasing = false}) {
     if (sketches.isEmpty || sketches.last.points.isEmpty) {
       sketches.add(Sketch(
@@ -68,9 +67,9 @@ class SketchProvider extends ChangeNotifier {
       sketches.last.points.add(point);
     }
     // Notify listeners every 3 points added to reduce UI lag
-  if (sketches.last.points.length % 2 == 0) {
-    notifyListeners();
-  }
+    if (sketches.last.points.length % 2 == 0) {
+      notifyListeners();
+    }
   }
 
   void endDrawing() {
@@ -143,7 +142,6 @@ class SketchProvider extends ChangeNotifier {
     _backgroundColor = color;
     strokeWidth = 3.0;
     isEraserActive = false;
-    print(color.toString());
     clearCachedImage();
     notifyListeners();
   }

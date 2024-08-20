@@ -55,9 +55,6 @@ class _NewDrawingCanvasState extends State<NewDrawingCanvas> {
         Provider.of<AllSketchesNotifier>(context, listen: false).sides;
     final filled =
         Provider.of<AllSketchesNotifier>(context, listen: false).filled;
-    final backGroundColor =
-        Provider.of<AllSketchesNotifier>(context, listen: false)
-            .backgroundColor;
 
     final currentSketch = Sketch.fromDrawingMode(
       Sketch(
@@ -67,8 +64,7 @@ class _NewDrawingCanvasState extends State<NewDrawingCanvas> {
         points: [offset],
         strokeWidth:
             drawingMode == DrawingMode.eraser ? eraserSize : strokeSize,
-        color:
-            drawingMode == DrawingMode.eraser ? backGroundColor : selectedColor,
+        color: selectedColor,
         sides: polygonSides,
       ),
       drawingMode,
@@ -97,9 +93,6 @@ class _NewDrawingCanvasState extends State<NewDrawingCanvas> {
         Provider.of<AllSketchesNotifier>(context, listen: false).sides;
     final filled =
         Provider.of<AllSketchesNotifier>(context, listen: false).filled;
-    final backGroundColor =
-        Provider.of<AllSketchesNotifier>(context, listen: false)
-            .backgroundColor;
 
     final points = List<Offset>.from(currentSketchNotifier.sketch?.points ?? [])
       ..add(offset);
@@ -112,8 +105,7 @@ class _NewDrawingCanvasState extends State<NewDrawingCanvas> {
         points: points,
         strokeWidth:
             drawingMode == DrawingMode.eraser ? eraserSize : strokeSize,
-        color:
-            drawingMode == DrawingMode.eraser ? backGroundColor : selectedColor,
+        color: selectedColor,
         sides: polygonSides,
       ),
       drawingMode,
@@ -146,11 +138,8 @@ class _NewDrawingCanvasState extends State<NewDrawingCanvas> {
                     .eraserSize
                 : Provider.of<AllSketchesNotifier>(context, listen: false)
                     .strokeWidth,
-        color: Provider.of<AllSketchesNotifier>(context, listen: false).mode ==
-                DrawingMode.eraser
-            ? Colors.white
-            : Provider.of<AllSketchesNotifier>(context, listen: false)
-                .selectedColor,
+        color: Provider.of<AllSketchesNotifier>(context, listen: false)
+            .selectedColor,
         sides: Provider.of<AllSketchesNotifier>(context, listen: false).sides,
       ),
       Provider.of<AllSketchesNotifier>(context, listen: false).mode,
@@ -165,27 +154,12 @@ class _NewDrawingCanvasState extends State<NewDrawingCanvas> {
         return SizedBox(
           height: widget.height,
           width: widget.width,
-          child: RepaintBoundary(
-            // key: canvasGlobalKey,
-            child: Container(
-              width: double.maxFinite,
-              height: double.maxFinite,
-              decoration: BoxDecoration(
-                color: sketchProvider.backgroundColor,
-                image: sketchProvider.backgroundImage != null
-                    ? DecorationImage(
-                        image: AssetImage(sketchProvider.backgroundImage!),
-                        fit: BoxFit.fill,
-                      )
-                    : null,
-              ),
-              child: CustomPaint(
-                painter: SketchPainter(
-                  sketches: allSketches.sketches,
-                  backgroundImage: sketchProvider.cachedImage,
-                  backgroundColor: sketchProvider.backgroundColor,
-                ),
-              ),
+          child: CustomPaint(
+            painter: SketchPainter(
+              sketches: allSketches.sketches,
+              backgroundImage: sketchProvider.cachedImage,
+              backgroundColor: sketchProvider.backgroundColor,
+              setBackgroundHere: true,
             ),
           ),
         );
@@ -194,7 +168,6 @@ class _NewDrawingCanvasState extends State<NewDrawingCanvas> {
   }
 
   Widget buildCurrentPath(BuildContext context) {
-    final sketchProvider = Provider.of<SketchProvider>(context);
     final newSketchProvider = Provider.of<AllSketchesNotifier>(context);
     return Listener(
       onPointerDown: (details) => onPointerDown(details, context),
@@ -208,9 +181,9 @@ class _NewDrawingCanvasState extends State<NewDrawingCanvas> {
             height: double.maxFinite,
             child: CustomPaint(
               painter: SketchPainter(
-                backgroundImage: newSketchProvider.cachedImage,
                 backgroundColor: newSketchProvider.backgroundColor,
                 sketches: currentSketch != null ? [currentSketch] : [],
+                setBackgroundHere: false,
               ),
             ),
           );
@@ -224,40 +197,51 @@ class SketchPainter extends CustomPainter {
   final List<Sketch> sketches;
   final Color backgroundColor;
   final ui.Image? backgroundImage;
+  final bool setBackgroundHere;
 
   const SketchPainter({
     Key? key,
     this.backgroundImage,
     required this.backgroundColor,
     required this.sketches,
+    required this.setBackgroundHere,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
-    //background image
-    if (backgroundImage != null) {
-      canvas.drawImageRect(
-        backgroundImage!,
-        Rect.fromLTWH(
-          0,
-          0,
-          backgroundImage!.width.toDouble(),
-          backgroundImage!.height.toDouble(),
-        ),
-        Rect.fromLTWH(0, 0, size.width, size.height),
-        Paint(),
-      );
+    if (setBackgroundHere) {
+      if (backgroundImage != null) {
+        canvas.drawImageRect(
+          backgroundImage!,
+          Rect.fromLTWH(
+            0,
+            0,
+            backgroundImage!.width.toDouble(),
+            backgroundImage!.height.toDouble(),
+          ),
+          Rect.fromLTWH(0, 0, size.width, size.height),
+          Paint(),
+        );
+      } else {
+        final backgroundPaint = Paint()..color = backgroundColor;
+        canvas.drawRect(
+            Rect.fromLTWH(0, 0, size.width, size.height), backgroundPaint);
+      }
+
+      canvas.saveLayer(Rect.fromLTWH(0, 0, size.width, size.height), Paint());
+      canvas.clipRect(Rect.fromLTWH(0, 0, size.width, size.height));
     }
+
     for (Sketch sketch in sketches) {
       Paint paint = Paint();
       if (!sketch.isErasing) {
-        paint.color = sketch.color;
+        paint
+          ..color = sketch.color
+          ..blendMode = BlendMode.srcOver;
       } else {
         paint
-          ..color =
-              backgroundImage == null ? backgroundColor : Colors.transparent
-          ..blendMode =
-              backgroundImage == null ? BlendMode.srcOver : BlendMode.clear;
+          ..color = Colors.transparent
+          ..blendMode = BlendMode.clear;
       }
 
       final points = sketch.points;
@@ -288,7 +272,6 @@ class SketchPainter extends CustomPainter {
       }
 
       paint
-        ..color = sketch.color
         ..strokeCap = StrokeCap.round
         ..style = PaintingStyle.stroke
         ..strokeWidth = sketch.strokeWidth;
@@ -347,10 +330,13 @@ class SketchPainter extends CustomPainter {
         canvas.drawPath(polygonPath, paint);
       }
     }
+    if (setBackgroundHere) canvas.restore();
   }
 
   @override
   bool shouldRepaint(covariant SketchPainter oldDelegate) {
-    return oldDelegate.sketches != sketches;
+    return oldDelegate.sketches != sketches ||
+        oldDelegate.backgroundImage != backgroundImage ||
+        oldDelegate.backgroundColor != backgroundColor;
   }
 }

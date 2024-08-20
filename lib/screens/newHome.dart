@@ -495,9 +495,7 @@ class _UndoRedoStack {
   late int _sketchCount;
 
   void _sketchesCountListener() {
-    print('reod stackkkk length is ${_redoStack.length}');
     if (provider.sketches.length > _sketchCount) {
-      print('clearing the redo stack');
       _redoStack.clear();
       _canRedo.value = false;
       _sketchCount = provider.sketches.length;
@@ -514,16 +512,13 @@ class _UndoRedoStack {
     if (sketches.isNotEmpty) {
       _sketchCount--;
       _redoStack.add(sketches.removeLast());
-      print('redo stack length is ${_redoStack.length}');
       provider.sketches = sketches;
       _canRedo.value = true;
       provider.sketch = null;
     }
-    print('redo stack length again is ${_redoStack.length}');
   }
 
   void redo() {
-    print('redo is empty ${_redoStack.isEmpty}');
     if (_redoStack.isEmpty) return;
     final sketch = _redoStack.removeLast();
     _canRedo.value = _redoStack.isNotEmpty;

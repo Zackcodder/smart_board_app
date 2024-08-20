@@ -37,7 +37,7 @@ class Sketch {
       // size: sketch.size,
       isErasing: sketch.isErasing,
       strokeWidth: sketch.strokeWidth,
-      
+
       filled: drawingMode == DrawingMode.line ||
               drawingMode == DrawingMode.pencil ||
               drawingMode == DrawingMode.eraser
@@ -96,7 +96,14 @@ class Sketch {
   }
 }
 
-enum SketchType { scribble, square, circle, polygon,line, pencil,  }
+enum SketchType {
+  scribble,
+  square,
+  circle,
+  polygon,
+  line,
+  pencil,
+}
 
 extension SketchTypeX on SketchType {
   String toRegularString() => toString().split('.')[1];
