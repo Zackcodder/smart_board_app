@@ -120,7 +120,6 @@ class _NewDrawingCanvasState extends State<NewDrawingCanvas> {
       allSketches.sketches = List<Sketch>.from(allSketches.sketches)
         ..add(currentSketch);
     }
-
     Provider.of<SketchProvider>(context, listen: false).sketch =
         Sketch.fromDrawingMode(
       Sketch(

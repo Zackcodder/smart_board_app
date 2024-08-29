@@ -29,7 +29,6 @@ class Sketch {
     DrawingMode drawingMode,
     bool filled,
   ) {
-  bool erasing = drawingMode == DrawingMode.eraser;
     return Sketch(
       points: sketch.points,
       color: sketch.color,
