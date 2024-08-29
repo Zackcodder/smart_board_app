@@ -6,9 +6,11 @@ import 'package:smart_board_app/provider/sketch_provider.dart';
 
 ///
 class PencilToolOptions extends StatelessWidget {
+  const PencilToolOptions({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final sketchProvider = context.watch<SketchProvider>();
+    final newSketchProvider = context.watch<SketchProvider>();
 
     return Positioned(
       bottom: 50,
@@ -54,8 +56,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///first thickness
                     GestureDetector(
                       onTap: () {
-                        sketchProvider.updateStrokeWidth(20);
-                       
+                        newSketchProvider.updateStrokeWidth(20);
                       },
                       child: const CircleAvatar(
                         radius: 10,
@@ -69,8 +70,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///secind thickness
                     GestureDetector(
                       onTap: () {
-                        sketchProvider.updateStrokeWidth(30);
-                        
+                        newSketchProvider.updateStrokeWidth(25);
                       },
                       child: const CircleAvatar(
                         radius: 15,
@@ -84,8 +84,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///3rd thickness
                     GestureDetector(
                       onTap: () {
-                          sketchProvider.updateStrokeWidth(40);
-                        
+                        newSketchProvider.updateStrokeWidth(30);
                       },
                       child: const CircleAvatar(
                         radius: 20,
@@ -95,7 +94,9 @@ class PencilToolOptions extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
 
                 ///2nd roll for strock thickness and pen for dash line
                 Row(
@@ -108,7 +109,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///first thickness
                     GestureDetector(
                       onTap: () {
-                        sketchProvider.updateStrokeWidth(5);
+                        newSketchProvider.updateStrokeWidth(5);
                       },
                       child: const CircleAvatar(
                         radius: 5,
@@ -122,7 +123,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///secind thickness
                     GestureDetector(
                       onTap: () {
-                        sketchProvider.updateStrokeWidth(10);
+                        newSketchProvider.updateStrokeWidth(10);
                       },
                       child: const CircleAvatar(
                         radius: 7,
@@ -136,7 +137,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///3rd thickness
                     GestureDetector(
                       onTap: () {
-                        sketchProvider.updateStrokeWidth(15);
+                        newSketchProvider.updateStrokeWidth(15);
                       },
                       child: const CircleAvatar(
                         radius: 9,
@@ -146,7 +147,10 @@ class PencilToolOptions extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
+
                 ///stroker thickness slider
                 SizedBox(
                   width: 300,
@@ -155,9 +159,9 @@ class PencilToolOptions extends StatelessWidget {
                       Slider(
                     min: 3.0,
                     max: 50.0,
-                    value: sketchProvider.strokeWidth,
+                    value: newSketchProvider.strokeWidth,
                     onChanged: (value) {
-                      sketchProvider.updateStrokeWidth(value);
+                      newSketchProvider.updateStrokeWidth(value);
                     },
                   ),
                 ),
@@ -166,22 +170,21 @@ class PencilToolOptions extends StatelessWidget {
 
             // Color Picker
             BlockPicker(
-              pickerColor: sketchProvider.selectedColor,
+              pickerColor: newSketchProvider.selectedColor,
               onColorChanged: (color) {
-                              sketchProvider.updateColor(color);
-                
+                newSketchProvider.updateColor(color);
               },
             ),
-           
+
             ///color pallette
             ColorPicker(
               colorPickerWidth: 200,
               labelTypes: const [],
               pickerAreaHeightPercent: 0.5,
               enableAlpha: false,
-              pickerColor: sketchProvider.selectedColor,
+              pickerColor: newSketchProvider.selectedColor,
               onColorChanged: (color) {
-                sketchProvider.updateColor(color);
+                newSketchProvider.updateColor(color);
               },
             ),
           ],

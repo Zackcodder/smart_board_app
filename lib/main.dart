@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_board_app/models/storage_provider.dart';
 import 'package:smart_board_app/provider/sketch_provider.dart';
-import 'package:smart_board_app/screens/home.dart';
-
-void main() {
+import 'package:smart_board_app/screens/newhome.dart';
+import 'package:smart_board_app/service/sketch_service.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -15,9 +17,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-    ChangeNotifierProvider(
-      create: (context) => SketchProvider()),
-
+        ChangeNotifierProvider(create: (context) => SketchProvider()),
+        ChangeNotifierProvider(create: (_) => StorageProvider()),
+        ChangeNotifierProvider(
+          create: (context) =>
+              SketchDataService(storageProvider: StorageProvider()),
+        ),
       ],
       child: MaterialApp(
         title: 'SmartBoard',
@@ -25,7 +30,7 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const SketchView(),
+        home: const NewHome(),
       ),
     );
   }
