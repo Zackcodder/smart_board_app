@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_board_app/provider/new_provider.dart';
-import 'package:smart_board_app/provider/new_sketech_provider.dart';
 import 'package:smart_board_app/provider/sketch_provider.dart';
 
 class BackGroundDesignOptions extends StatelessWidget {
@@ -11,7 +9,6 @@ class BackGroundDesignOptions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final sketchProvider = context.watch<SketchProvider>();
-    final allSketchProvider = context.watch<AllSketchesNotifier>();
     return Positioned(
       bottom: 50,
       right: 160,
@@ -102,7 +99,6 @@ class BackGroundDesignOptions extends StatelessWidget {
                             onTap: () {
                               
                               sketchProvider.loadImage('assets/BG.png');
-                              // .setBackgroundImage('assets/BG.png');
                             },
                             child: SizedBox(
                               height: 80,
@@ -120,7 +116,6 @@ class BackGroundDesignOptions extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               sketchProvider.loadImage('assets/BG1.jpg');
-                                  // .setBackgroundImage('assets/BG1.jpg');
                             },
                             child: SizedBox(
                               height: 80,
@@ -138,7 +133,6 @@ class BackGroundDesignOptions extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               sketchProvider.loadImage('assets/BG2.jpg');
-                                  // .setBackgroundImage('assets/BG2.jpg');
                             },
                             child: SizedBox(
                               height: 80,
@@ -164,7 +158,6 @@ class BackGroundDesignOptions extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               sketchProvider.loadImage('assets/BG3.png');
-                                  // .setBackgroundImage('assets/BG3.png');
                             },
                             child: SizedBox(
                               height: 80,
@@ -182,7 +175,6 @@ class BackGroundDesignOptions extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               sketchProvider.loadImage('assets/BG4.png');
-                                  // .setBackgroundImage('assets/BG4.png');
                             },
                             child: SizedBox(
                               height: 80,
@@ -200,7 +192,6 @@ class BackGroundDesignOptions extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               sketchProvider.loadImage('assets/BG5.jpg');
-                                  // .setBackgroundImage('assets/BG5.jpg');
                             },
                             child: SizedBox(
                               height: 80,
@@ -226,7 +217,6 @@ class BackGroundDesignOptions extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               sketchProvider.loadImage('assets/BG3.png');
-                                  // .setBackgroundImage('assets/BG3.png');
                             },
                             child: SizedBox(
                               height: 80,
@@ -244,7 +234,6 @@ class BackGroundDesignOptions extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               sketchProvider.loadImage('assets/BG4.png');
-                                  // .setBackgroundImage('assets/BG4.png');
                             },
                             child: SizedBox(
                               height: 80,
@@ -262,7 +251,6 @@ class BackGroundDesignOptions extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               sketchProvider.loadImage('assets/BG6.jpg');
-                                  // .setBackgroundImage('assets/BG6.jpg');
                             },
                             child: SizedBox(
                               height: 80,
@@ -287,7 +275,6 @@ class BackGroundDesignOptions extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               sketchProvider.loadImage('assets/BG3.png');
-                                  // .setBackgroundImage('assets/BG3.png');
                             },
                             child: SizedBox(
                               height: 80,
@@ -305,7 +292,6 @@ class BackGroundDesignOptions extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               sketchProvider.loadImage('assets/BG4.png');
-                                  // .setBackgroundImage('assets/BG4.png');
                             },
                             child: SizedBox(
                               height: 80,
@@ -323,7 +309,6 @@ class BackGroundDesignOptions extends StatelessWidget {
                           GestureDetector(
                             onTap: () {
                               sketchProvider.loadImage('assets/BG5.jpg');
-                                  // .setBackgroundImage('assets/BG5.jpg');
                             },
                             child: SizedBox(
                               height: 80,

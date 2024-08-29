@@ -4,23 +4,20 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_board_app/models/drawing_model.dart';
+import 'package:smart_board_app/models/sketch_data_provider.dart';
 import 'package:smart_board_app/models/sketch_model.dart';
-import 'package:smart_board_app/provider/new_provider.dart';
 import 'package:smart_board_app/provider/sketch_provider.dart';
 
-import '../screens/newHome.dart';
+import '../screens/newhome.dart';
 
 class NewDrawingCanvas extends StatefulWidget {
   final double height;
   final double width;
-  // final GlobalKey canvasGlobalKey;
 
   const NewDrawingCanvas({
     super.key,
     required this.height,
     required this.width,
-    // required this.canvasGlobalKey,
   });
 
   @override
@@ -44,35 +41,35 @@ class _NewDrawingCanvasState extends State<NewDrawingCanvas> {
     final offset = box.globalToLocal(details.position);
 
     final drawingMode =
-        Provider.of<AllSketchesNotifier>(context, listen: false).mode;
+        Provider.of<SketchProvider>(context, listen: false).mode;
     final eraserSize =
-        Provider.of<AllSketchesNotifier>(context, listen: false).eraserSize;
+        Provider.of<SketchProvider>(context, listen: false).eraserSize;
     final strokeSize =
-        Provider.of<AllSketchesNotifier>(context, listen: false).strokeWidth;
+        Provider.of<SketchProvider>(context, listen: false).strokeWidth;
     final selectedColor =
-        Provider.of<AllSketchesNotifier>(context, listen: false).selectedColor;
+        Provider.of<SketchProvider>(context, listen: false).selectedColor;
     final polygonSides =
-        Provider.of<AllSketchesNotifier>(context, listen: false).sides;
-    final filled =
-        Provider.of<AllSketchesNotifier>(context, listen: false).filled;
+        Provider.of<SketchProvider>(context, listen: false).sides;
+    final filled = Provider.of<SketchProvider>(context, listen: false).filled;
 
     final currentSketch = Sketch.fromDrawingMode(
       Sketch(
-        isErasing: Provider.of<AllSketchesNotifier>(context, listen: false)
-            .isEraserActive,
+        isErasing:
+            Provider.of<SketchProvider>(context, listen: false).isEraserActive,
         paths: Path(),
         points: [offset],
         strokeWidth:
             drawingMode == DrawingMode.eraser ? eraserSize : strokeSize,
-        color: selectedColor,
+        color: drawingMode == DrawingMode.eraser
+            ? Colors.transparent
+            : selectedColor,
         sides: polygonSides,
       ),
       drawingMode,
       filled,
     );
 
-    Provider.of<AllSketchesNotifier>(context, listen: false).sketch =
-        currentSketch;
+    Provider.of<SketchProvider>(context, listen: false).sketch = currentSketch;
   }
 
   void onPointerMove(PointerMoveEvent details, BuildContext context) {
@@ -80,32 +77,33 @@ class _NewDrawingCanvasState extends State<NewDrawingCanvas> {
     final offset = box.globalToLocal(details.position);
 
     final currentSketchNotifier =
-        Provider.of<AllSketchesNotifier>(context, listen: false);
+        Provider.of<SketchProvider>(context, listen: false);
     final drawingMode =
-        Provider.of<AllSketchesNotifier>(context, listen: false).mode;
+        Provider.of<SketchProvider>(context, listen: false).mode;
     final eraserSize =
-        Provider.of<AllSketchesNotifier>(context, listen: false).eraserSize;
+        Provider.of<SketchProvider>(context, listen: false).eraserSize;
     final strokeSize =
-        Provider.of<AllSketchesNotifier>(context, listen: false).strokeWidth;
+        Provider.of<SketchProvider>(context, listen: false).strokeWidth;
     final selectedColor =
-        Provider.of<AllSketchesNotifier>(context, listen: false).selectedColor;
+        Provider.of<SketchProvider>(context, listen: false).selectedColor;
     final polygonSides =
-        Provider.of<AllSketchesNotifier>(context, listen: false).sides;
-    final filled =
-        Provider.of<AllSketchesNotifier>(context, listen: false).filled;
+        Provider.of<SketchProvider>(context, listen: false).sides;
+    final filled = Provider.of<SketchProvider>(context, listen: false).filled;
 
     final points = List<Offset>.from(currentSketchNotifier.sketch?.points ?? [])
       ..add(offset);
 
     currentSketchNotifier.sketch = Sketch.fromDrawingMode(
       Sketch(
-        isErasing: Provider.of<AllSketchesNotifier>(context, listen: false)
-            .isEraserActive,
+        isErasing:
+            Provider.of<SketchProvider>(context, listen: false).isEraserActive,
         paths: Path(),
         points: points,
         strokeWidth:
             drawingMode == DrawingMode.eraser ? eraserSize : strokeSize,
-        color: selectedColor,
+        color: drawingMode == DrawingMode.eraser
+            ? Colors.transparent
+            : selectedColor,
         sides: polygonSides,
       ),
       drawingMode,
@@ -115,41 +113,37 @@ class _NewDrawingCanvasState extends State<NewDrawingCanvas> {
 
   void onPointerUp(PointerUpEvent details, BuildContext context) {
     final currentSketch =
-        Provider.of<AllSketchesNotifier>(context, listen: false).sketch;
+        Provider.of<SketchProvider>(context, listen: false).sketch;
 
     if (currentSketch != null) {
-      final allSketches =
-          Provider.of<AllSketchesNotifier>(context, listen: false);
+      final allSketches = Provider.of<SketchProvider>(context, listen: false);
       allSketches.sketches = List<Sketch>.from(allSketches.sketches)
         ..add(currentSketch);
     }
 
-    Provider.of<AllSketchesNotifier>(context, listen: false).sketch =
+    Provider.of<SketchProvider>(context, listen: false).sketch =
         Sketch.fromDrawingMode(
       Sketch(
-        isErasing: Provider.of<AllSketchesNotifier>(context, listen: false)
-            .isEraserActive,
+        isErasing:
+            Provider.of<SketchProvider>(context, listen: false).isEraserActive,
         paths: Path(),
         points: [],
-        strokeWidth:
-            Provider.of<AllSketchesNotifier>(context, listen: false).mode ==
-                    DrawingMode.eraser
-                ? Provider.of<AllSketchesNotifier>(context, listen: false)
-                    .eraserSize
-                : Provider.of<AllSketchesNotifier>(context, listen: false)
-                    .strokeWidth,
-        color: Provider.of<AllSketchesNotifier>(context, listen: false)
-            .selectedColor,
-        sides: Provider.of<AllSketchesNotifier>(context, listen: false).sides,
+        strokeWidth: Provider.of<SketchProvider>(context, listen: false).mode ==
+                DrawingMode.eraser
+            ? Provider.of<SketchProvider>(context, listen: false).eraserSize
+            : Provider.of<SketchProvider>(context, listen: false).strokeWidth,
+        color:
+            Provider.of<SketchProvider>(context, listen: false).selectedColor,
+        sides: Provider.of<SketchProvider>(context, listen: false).sides,
       ),
-      Provider.of<AllSketchesNotifier>(context, listen: false).mode,
-      Provider.of<AllSketchesNotifier>(context, listen: false).filled,
+      Provider.of<SketchProvider>(context, listen: false).mode,
+      Provider.of<SketchProvider>(context, listen: false).filled,
     );
   }
 
   Widget buildAllSketches(BuildContext context) {
     final sketchProvider = Provider.of<SketchProvider>(context);
-    return Consumer<AllSketchesNotifier>(
+    return Consumer<SketchProvider>(
       builder: (context, allSketches, _) {
         return SizedBox(
           height: widget.height,
@@ -168,12 +162,12 @@ class _NewDrawingCanvasState extends State<NewDrawingCanvas> {
   }
 
   Widget buildCurrentPath(BuildContext context) {
-    final newSketchProvider = Provider.of<AllSketchesNotifier>(context);
+    final newSketchProvider = Provider.of<SketchProvider>(context);
     return Listener(
       onPointerDown: (details) => onPointerDown(details, context),
       onPointerMove: (details) => onPointerMove(details, context),
       onPointerUp: (details) => onPointerUp(details, context),
-      child: Consumer<AllSketchesNotifier>(
+      child: Consumer<SketchProvider>(
         builder: (context, currentSketchNotifier, _) {
           final currentSketch = currentSketchNotifier.sketch;
           return SizedBox(
@@ -209,6 +203,7 @@ class SketchPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
+    ///for backgorund inmage and color
     if (setBackgroundHere) {
       if (backgroundImage != null) {
         canvas.drawImageRect(
@@ -234,14 +229,13 @@ class SketchPainter extends CustomPainter {
 
     for (Sketch sketch in sketches) {
       Paint paint = Paint();
+
       if (!sketch.isErasing) {
         paint
           ..color = sketch.color
           ..blendMode = BlendMode.srcOver;
       } else {
-        paint
-          ..color = Colors.transparent
-          ..blendMode = BlendMode.clear;
+        paint.blendMode = BlendMode.clear;
       }
 
       final points = sketch.points;
@@ -274,12 +268,8 @@ class SketchPainter extends CustomPainter {
       paint
         ..strokeCap = StrokeCap.round
         ..style = PaintingStyle.stroke
+        ..isAntiAlias = false
         ..strokeWidth = sketch.strokeWidth;
-
-      // if (!sketch.filled) {
-      //   paint.style = PaintingStyle.stroke;
-      //   paint.strokeWidth = sketch.strokeWidth;
-      // }
 
       // define first and last points for convenience
       Offset firstPoint = sketch.points.first;

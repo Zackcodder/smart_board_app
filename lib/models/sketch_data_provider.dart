@@ -3,8 +3,11 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:smart_board_app/models/drawing_model.dart';
 import 'package:smart_board_app/models/sketch_model.dart';
+
+enum DrawingMode {  line, pencil, arrow, eraser, square, circle, polygon,
+  }
+
 
 class SketchData {
   final String id;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_board_app/models/drawing_model.dart';
+import 'package:smart_board_app/models/sketch_data_provider.dart';
 
 class Sketch {
   final Path paths;
@@ -19,7 +19,6 @@ class Sketch {
     required this.color,
     this.type = SketchType.scribble,
     this.filled = false,
-    // this.isErasing = false,
     required this.isErasing,
     this.sides = 3,
     // required this.size,
@@ -30,11 +29,11 @@ class Sketch {
     DrawingMode drawingMode,
     bool filled,
   ) {
+  bool erasing = drawingMode == DrawingMode.eraser;
     return Sketch(
       points: sketch.points,
       color: sketch.color,
       paths: sketch.paths,
-      // size: sketch.size,
       isErasing: sketch.isErasing,
       strokeWidth: sketch.strokeWidth,
 
@@ -123,7 +122,7 @@ extension ColorExtension on String {
     if (hexColor.length == 8) {
       return Color(int.parse('0x$hexColor'));
     } else {
-      return Colors.black;
+      return Colors.red;
     }
   }
 }

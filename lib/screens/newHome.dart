@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:smart_board_app/models/sketch_model.dart';
-import 'package:smart_board_app/provider/new_provider.dart';
+import 'package:smart_board_app/provider/sketch_provider.dart';
+import 'package:smart_board_app/screens/web_browers_screen.dart';
 import 'package:smart_board_app/widget/backgound_feature.dart';
 import 'package:smart_board_app/widget/pencil_feature.dart';
 import 'package:smart_board_app/widget/testing_canvas.dart';
@@ -12,6 +13,7 @@ ValueNotifier<bool> showBackgroundOption = ValueNotifier<bool>(false);
 ValueNotifier<bool> sideBackgroundImageList = ValueNotifier<bool>(false);
 ValueNotifier<bool> showLoginOptions = ValueNotifier<bool>(false);
 ValueNotifier<bool> showEraserSlider = ValueNotifier<bool>(false);
+ValueNotifier<bool> showBrowserOption = ValueNotifier<bool>(false);
 
 void setOption(
     {ValueNotifier<bool>? targetNotifier, bool? value, bool? setAllTo}) {
@@ -21,6 +23,7 @@ void setOption(
     sideBackgroundImageList.value = setAllTo;
     showLoginOptions.value = setAllTo;
     showEraserSlider.value = setAllTo;
+    showBrowserOption.value = setAllTo;
     return;
   }
 
@@ -33,6 +36,7 @@ void setOption(
       }
       if (targetNotifier != showLoginOptions) showLoginOptions.value = false;
       if (targetNotifier != showEraserSlider) showEraserSlider.value = false;
+      if (targetNotifier != showBrowserOption) showBrowserOption.value = false;
     }
   }
 }
@@ -48,17 +52,18 @@ class _NewHomeState extends State<NewHome> {
   late final _UndoRedoStack undoRedo;
   @override
   void initState() {
-    undoRedo = _UndoRedoStack(context.read<AllSketchesNotifier>());
+    undoRedo = _UndoRedoStack(context.read<SketchProvider>());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<AllSketchesNotifier>(
+      body: Consumer<SketchProvider>(
         builder: (context, sketchProvider, _) {
           return Stack(
             children: [
+              ///canvas
               SizedBox(
                 width: double.maxFinite,
                 height: double.maxFinite,
@@ -68,9 +73,162 @@ class _NewHomeState extends State<NewHome> {
                 ),
               ),
 
+              ///login icon
+              Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Container(
+                    width: 150,
+                    decoration: BoxDecoration(
+                        color: Colors.grey,
+                        borderRadius: BorderRadius.circular(30)),
+                    alignment: Alignment.centerRight,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        const Text(
+                          'Tony',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          width: 25,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setOption(
+                                targetNotifier: showLoginOptions,
+                                value: !showLoginOptions.value);
+                            sketchProvider.toggleNewEraser(false);
+                          },
+                          child: const CircleAvatar(
+                            radius: 30,
+                            child: Icon(
+                              FontAwesomeIcons.user,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+
+              ///browser options
+              ValueListenableBuilder(
+                  valueListenable: showBrowserOption,
+                  builder: (context, showBrowser, _) {
+                    return showBrowser
+                        ? Align(
+                            alignment: Alignment.center,
+                            child: Container(
+                              color: const Color.fromARGB(255, 241, 244, 247),
+                              height: 300,
+                              width: 300,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ///bing browser
+                                  GestureDetector(
+                                    onTap: () {
+                                      showBrowserOption.value = false;
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const WebBrowersScreen(
+                                                  url: "https://www.bing.com/"),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(20),
+                                      margin: const EdgeInsets.all(10),
+                                      color: const Color.fromARGB(
+                                          255, 196, 180, 179),
+                                      child: const Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text('Bing Browser'),
+                                          Icon(FontAwesomeIcons.globe),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+
+                                  ///longman dictionary
+                                  GestureDetector(
+                                    onTap: () {
+                                      showBrowserOption.value = false;
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const WebBrowersScreen(
+                                                  url:
+                                                      "https://www.ldoceonline.com/"),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(20),
+                                      margin: const EdgeInsets.all(10),
+                                      color: const Color.fromARGB(
+                                          255, 196, 180, 179),
+                                      child: const Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text('Longman'),
+                                          Icon(FontAwesomeIcons.globe),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+
+                                  ///webster
+                                  GestureDetector(
+                                    onTap: () {
+                                      showBrowserOption.value = false;
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const WebBrowersScreen(
+                                                  url:
+                                                      "https://www.merriam-webster.com/"),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.all(20),
+                                      margin: const EdgeInsets.all(10),
+                                      color: const Color.fromARGB(
+                                          255, 196, 180, 179),
+                                      child: const Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text('Webster'),
+                                          Icon(FontAwesomeIcons.globe),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink();
+                  }),
+
               //button button options
               Positioned(
-                left: 400,
+                left: 200,
                 right: 10,
                 bottom: 0,
                 child: Container(
@@ -81,6 +239,7 @@ class _NewHomeState extends State<NewHome> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
+                      ///brush
                       IconButton(
                         icon: const Icon(
                           FontAwesomeIcons.pencil,
@@ -91,7 +250,7 @@ class _NewHomeState extends State<NewHome> {
                           setOption(
                               targetNotifier: showPencilOptions,
                               value: !showPencilOptions.value);
-                          sketchProvider.toggleEraser(false);
+                          sketchProvider.toggleNewEraser(false);
                         },
                       ),
 
@@ -102,11 +261,12 @@ class _NewHomeState extends State<NewHome> {
                           size: 20,
                           color: Colors.black,
                         ),
-                        onPressed: () {
+                        onPressed: () async {
                           setOption(
                               targetNotifier: showEraserSlider,
                               value: !showEraserSlider.value);
-                          sketchProvider.toggleEraser(showEraserSlider.value);
+                          sketchProvider
+                              .toggleNewEraser(showEraserSlider.value);
                         },
                       ),
 
@@ -126,13 +286,16 @@ class _NewHomeState extends State<NewHome> {
 
                       ///undo
                       IconButton(
-                        icon: const Icon(
+                        icon: Icon(
                           FontAwesomeIcons.rotateLeft,
                           size: 20,
-                          color: Colors.black,
+                          color: sketchProvider.sketches.isNotEmpty
+                              ? Colors.black
+                              : Colors.grey,
                         ),
                         onPressed: sketchProvider.sketches.isNotEmpty
                             ? () {
+                                sketchProvider.toggleNewEraser(false);
                                 undoRedo.undo();
                               }
                             : null,
@@ -143,13 +306,14 @@ class _NewHomeState extends State<NewHome> {
                           valueListenable: undoRedo.canRedo,
                           builder: (context, canRedo, _) {
                             return IconButton(
-                              icon: const Icon(
+                              icon: Icon(
                                 FontAwesomeIcons.rotateRight,
                                 size: 20,
-                                color: Colors.black,
+                                color: canRedo ? Colors.black : Colors.grey,
                               ),
                               onPressed: canRedo
                                   ? () {
+                                      sketchProvider.toggleNewEraser(false);
                                       undoRedo.redo();
                                     }
                                   : null,
@@ -167,13 +331,19 @@ class _NewHomeState extends State<NewHome> {
                           setOption(
                               targetNotifier: showBackgroundOption,
                               value: !showBackgroundOption.value);
+                          sideBackgroundImageList.value = true;
+                          sketchProvider.toggleNewEraser(false);
                         },
                       ),
+
                       //reset background
                       IconButton(
                         icon: const Icon(Icons.hide_image_outlined),
                         onPressed: () {
-                          sketchProvider.clearCachedImage();
+                          context
+                              .read<SketchProvider>()
+                              .clearCachedImage(sketchProvider.backgroundColor);
+                          sketchProvider.toggleNewEraser(false);
                         },
                       ),
 
@@ -185,7 +355,10 @@ class _NewHomeState extends State<NewHome> {
                           color: Colors.black,
                         ),
                         onPressed: () {
-                          // drawingState.clearCanvas();
+                          setOption(
+                              targetNotifier: showBrowserOption,
+                              value: !showBrowserOption.value);
+                          sketchProvider.toggleNewEraser(false);
                         },
                       ),
 
@@ -231,6 +404,7 @@ class _NewHomeState extends State<NewHome> {
                               color: Colors.black,
                             ),
                             onPressed: () {
+                              sketchProvider.toggleNewEraser(false);
                               sideBackgroundImageList.value =
                                   !sideBackgroundImageList.value;
                             },
@@ -264,6 +438,7 @@ class _NewHomeState extends State<NewHome> {
               ValueListenableBuilder(
                   valueListenable: sideBackgroundImageList,
                   builder: (context, sideBackgroundImage, _) {
+                    final sketchProvider = context.watch<SketchProvider>();
                     return sideBackgroundImage
                         ? Positioned(
                             right: 0,
@@ -279,10 +454,8 @@ class _NewHomeState extends State<NewHome> {
                                     ///1st row
                                     GestureDetector(
                                       onTap: () {
-                                        setState(() {
-                                          sketchProvider
-                                              .loadImage('assets/BG.png');
-                                        });
+                                        sketchProvider
+                                            .loadImage('assets/BG.png');
                                       },
                                       child: SizedBox(
                                         height: 80,
@@ -471,6 +644,189 @@ class _NewHomeState extends State<NewHome> {
                           )
                         : const SizedBox.shrink();
                   }),
+
+              ///login screen
+              ValueListenableBuilder(
+                  valueListenable: showLoginOptions,
+                  builder: (context, loginOption, child) {
+                    return loginOption
+                        ? Positioned(
+                            top: 100,
+                            bottom: 100,
+                            right: 50,
+                            left: 50,
+                            child: Container(
+                              padding: const EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10)),
+                              width: double.maxFinite,
+                              height: 400,
+                              child: ListView(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(bottom: 10),
+                                    padding: const EdgeInsets.all(20),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(color: Colors.grey)),
+                                    height: 100,
+                                    child: const Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 40,
+                                          backgroundColor: Colors.grey,
+                                          child: Icon(FontAwesomeIcons.user),
+                                        ),
+                                        Text(
+                                          "姓名",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        IconButton(
+                                            onPressed: null,
+                                            icon: Icon(
+                                              Icons.edit_document,
+                                              size: 40,
+                                              color: Colors.grey,
+                                            ))
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(bottom: 10),
+                                    padding: const EdgeInsets.all(20),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(color: Colors.grey)),
+                                    height: 100,
+                                    child: const Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 40,
+                                          backgroundColor: Colors.grey,
+                                          child: Icon(FontAwesomeIcons.user),
+                                        ),
+                                        Text(
+                                          '托尼',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        IconButton(
+                                            onPressed: null,
+                                            icon: Icon(
+                                              Icons.edit_document,
+                                              size: 40,
+                                              color: Colors.grey,
+                                            ))
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(bottom: 10),
+                                    padding: const EdgeInsets.all(20),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border.all(color: Colors.grey)),
+                                    height: 100,
+                                    child: const Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 40,
+                                          backgroundColor: Colors.grey,
+                                          child: Icon(FontAwesomeIcons.user),
+                                        ),
+                                        Text(
+                                          'name',
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        IconButton(
+                                            onPressed: null,
+                                            icon: Icon(
+                                              Icons.edit_document,
+                                              size: 40,
+                                              color: Colors.grey,
+                                            ))
+                                      ],
+                                    ),
+                                  ),
+
+                                  ///button
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        ///sign out
+                                        Expanded(
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              showLoginOptions.value = false;
+                                            },
+                                            child: Container(
+                                              margin: const EdgeInsets.all(10),
+                                              padding: const EdgeInsets.all(10),
+                                              height: 40,
+                                              width: 150,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: Colors.red,
+                                              ),
+                                              child: const Center(
+                                                  child: Text('SignOut')),
+                                            ),
+                                          ),
+                                        ),
+
+                                        ///login
+                                        Expanded(
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              showLoginOptions.value = false;
+                                            },
+                                            child: Container(
+                                              margin: const EdgeInsets.all(10),
+                                              padding: const EdgeInsets.all(10),
+                                              height: 40,
+                                              width: 150,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                color: Colors.green,
+                                              ),
+                                              child: const Center(
+                                                child: Text(
+                                                  'Login',
+                                                  style: TextStyle(
+                                                      color: Colors.black),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ]),
+                                ],
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink();
+                  }),
             ],
           );
         },
@@ -480,7 +836,7 @@ class _NewHomeState extends State<NewHome> {
 }
 
 class _UndoRedoStack {
-  final AllSketchesNotifier provider;
+  final SketchProvider provider;
   _UndoRedoStack(this.provider) {
     _sketchCount = provider.sketches.length;
     provider.addListener(_sketchesCountListener);

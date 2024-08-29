@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:smart_board_app/provider/new_provider.dart';
+import 'package:smart_board_app/provider/sketch_provider.dart';
 
 ///
 class PencilToolOptions extends StatelessWidget {
@@ -10,7 +10,7 @@ class PencilToolOptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final newSketchProvider = context.watch<AllSketchesNotifier>();
+    final newSketchProvider = context.watch<SketchProvider>();
 
     return Positioned(
       bottom: 50,
@@ -56,7 +56,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///first thickness
                     GestureDetector(
                       onTap: () {
-                        newSketchProvider.updateStrokeWidth(9);
+                        newSketchProvider.updateStrokeWidth(20);
                       },
                       child: const CircleAvatar(
                         radius: 10,
@@ -70,7 +70,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///secind thickness
                     GestureDetector(
                       onTap: () {
-                        newSketchProvider.updateStrokeWidth(10);
+                        newSketchProvider.updateStrokeWidth(25);
                       },
                       child: const CircleAvatar(
                         radius: 15,
@@ -84,7 +84,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///3rd thickness
                     GestureDetector(
                       onTap: () {
-                        newSketchProvider.updateStrokeWidth(12);
+                        newSketchProvider.updateStrokeWidth(30);
                       },
                       child: const CircleAvatar(
                         radius: 20,
@@ -123,7 +123,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///secind thickness
                     GestureDetector(
                       onTap: () {
-                        newSketchProvider.updateStrokeWidth(7);
+                        newSketchProvider.updateStrokeWidth(10);
                       },
                       child: const CircleAvatar(
                         radius: 7,
@@ -137,7 +137,7 @@ class PencilToolOptions extends StatelessWidget {
                     ///3rd thickness
                     GestureDetector(
                       onTap: () {
-                        newSketchProvider.updateStrokeWidth(9);
+                        newSketchProvider.updateStrokeWidth(15);
                       },
                       child: const CircleAvatar(
                         radius: 9,

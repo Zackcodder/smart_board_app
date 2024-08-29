@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_board_app/models/sketch_data_provider.dart';
 import 'package:smart_board_app/models/storage_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SketchDataService with ChangeNotifier {
   static const String sketchesKey = 'sketches';
@@ -61,5 +62,31 @@ class SketchDataService with ChangeNotifier {
   void clearAllSketches() {
     storageProvider.clear(sketchesKey);
     notifyListeners();
+  }
+
+  ///bing brower
+  bingBrowser() async {
+    final Uri url = Uri.parse("https://www.bing.com/");
+    if (await launchUrl(url)) {
+      return true;
+    }
+    return false;
+  }
+
+  ///webster
+  websterBrowser() async {
+    final Uri url = Uri.parse("https://www.merriam-webster.com/");
+    if (await launchUrl(url)) {
+      return true;
+    }
+    return false;
+  }
+  ///longman
+  longmanBrowser() async {
+    final Uri url = Uri.parse("https://www.ldoceonline.com/");
+    if (await launchUrl(url)) {
+      return true;
+    }
+    return false;
   }
 }
