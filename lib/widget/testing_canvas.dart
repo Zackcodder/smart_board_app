@@ -229,12 +229,14 @@ class SketchPainter extends CustomPainter {
     for (Sketch sketch in sketches) {
       Paint paint = Paint();
 
-      if (!sketch.isErasing) {
+      if (!sketch.isErasing ) {
         paint
           ..color = sketch.color
           ..blendMode = BlendMode.srcOver;
       } else {
-        paint.blendMode = BlendMode.clear;
+        paint
+        ..strokeWidth = sketch.strokeWidth
+        ..blendMode = BlendMode.clear;
       }
 
       final points = sketch.points;
@@ -270,6 +272,11 @@ class SketchPainter extends CustomPainter {
         ..isAntiAlias = false
         ..strokeWidth = sketch.strokeWidth;
 
+        if (!sketch.filled) {
+        paint.style = PaintingStyle.stroke;
+        paint.strokeWidth = sketch.strokeWidth;
+      }
+
       // define first and last points for convenience
       Offset firstPoint = sketch.points.first;
       Offset lastPoint = sketch.points.last;
@@ -282,6 +289,8 @@ class SketchPainter extends CustomPainter {
 
       // Calculate path's radius from the first and last points
       double radius = (firstPoint - lastPoint).distance / 2;
+
+      
 
       if (sketch.type == SketchType.scribble) {
         canvas.drawPath(path, paint);

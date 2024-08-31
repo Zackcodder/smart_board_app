@@ -101,6 +101,7 @@ enum SketchType {
   polygon,
   line,
   pencil,
+  eraser
 }
 
 extension SketchTypeX on SketchType {
