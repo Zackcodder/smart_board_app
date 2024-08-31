@@ -90,7 +90,15 @@ class SketchProvider extends ChangeNotifier {
     strokeWidth = width;
     notifyListeners();
   }
+ 
+  // Shape selection
+  SketchType _selectedShape = SketchType.scribble;
+  SketchType get selectedShape => _selectedShape;
 
+  void setSelectedShape(DrawingMode value) {
+    _mode = value;
+    notifyListeners();
+  }
   ///eraser size
   double eraserSize = 3.0;
   bool isEraserActive = false;
@@ -137,5 +145,9 @@ class SketchProvider extends ChangeNotifier {
   }
 
   ///new features
+  ///
+    
+
+ 
   ///drawing of 
 }

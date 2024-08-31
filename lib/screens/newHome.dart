@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:smart_board_app/models/sketch_data_provider.dart';
 import 'package:smart_board_app/models/sketch_model.dart';
 import 'package:smart_board_app/provider/sketch_provider.dart';
 import 'package:smart_board_app/screens/web_browers_screen.dart';
 import 'package:smart_board_app/widget/backgound_feature.dart';
 import 'package:smart_board_app/widget/pencil_feature.dart';
+import 'package:smart_board_app/widget/shape_menu.dart';
 import 'package:smart_board_app/widget/testing_canvas.dart';
 
 ValueNotifier<bool> showPencilOptions = ValueNotifier(false);
@@ -73,6 +75,10 @@ class _NewHomeState extends State<NewHome> {
                 ),
               ),
 
+              
+              /// Shape Menu on the left side
+              ShapeMenu(),
+              
               ///login icon
               Positioned(
                   top: 10,
@@ -262,6 +268,7 @@ class _NewHomeState extends State<NewHome> {
                           color: Colors.black,
                         ),
                         onPressed: () async {
+                          sketchProvider.setSelectedShape(DrawingMode.eraser);
                           setOption(
                               targetNotifier: showEraserSlider,
                               value: !showEraserSlider.value);
@@ -634,10 +641,10 @@ class _NewHomeState extends State<NewHome> {
                                   //the slider for stroke width thickness
                                   Slider(
                                 min: 3.0,
-                                max: 50.0,
-                                value: sketchProvider.strokeWidth,
+                                max: 150.0,
+                                value: sketchProvider.eraserSize,
                                 onChanged: (value) {
-                                  sketchProvider.updateStrokeWidth(value);
+                                  sketchProvider.updateEraserSize(value);
                                 },
                               ),
                             ),
